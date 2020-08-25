@@ -48,3 +48,13 @@ Step 1: Create the Plugin Structure
  mvn archetype:generate -Dfilter=io.jenkins.archetypes:empty-plugin
 ```
 
+
+
+## Build Plugins
+
+`mvn package`
+
+`mvn install` 
+
+references
+https://www.jenkins.io/blog/2017/08/07/intro-to-plugin-development/
