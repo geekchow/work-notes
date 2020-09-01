@@ -21,23 +21,23 @@
 <profiles>
 ...
 <profile>
-      <id>jenkins</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <repositories>
-        <repository>
-          <id>repo.jenkins-ci.org</id>
-          <url>http://repo.jenkins-ci.org/public/</url>
-        </repository>
-      </repositories>
-      <pluginRepositories>
-        <pluginRepository>
-          <id>repo.jenkins-ci.org</id>
-          <url>http://repo.jenkins-ci.org/public/</url>
-        </pluginRepository>
-      </pluginRepositories>
-    </profile>
+  <id>jenkins</id>
+  <activation>
+    <activeByDefault>true</activeByDefault>
+  </activation>
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>http://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.jenkins-ci.org</id>
+      <url>http://repo.jenkins-ci.org/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+</profile>
 ...
 </profiles>
 ```
@@ -46,6 +46,13 @@ Step 1: Create the Plugin Structure
 ```shell
  # refer to: https://wiki.jenkins.io/display/JENKINS/Plugin+tutorial#Plugintutorial-CreatingaNewPlugin
  mvn archetype:generate -Dfilter=io.jenkins.archetypes:empty-plugin
+
+ # active mode
+ mvn archetype:generate -Dfilter=io.jenkins.archetypes:
+
+ # inactive mode
+ mvn archetype:generate -B -DarchetypeGroupId=io.jenkins.archetypes -DarchetypeArtifactId=empty-plugin -DhostOnJenkinsGitHub=true -DarchetypeVersion=1.7 -DartifactId=somefeature
+
 ```
 
 
@@ -58,3 +65,5 @@ Step 1: Create the Plugin Structure
 
 references
 https://www.jenkins.io/blog/2017/08/07/intro-to-plugin-development/
+https://www.jenkins.io/doc/developer/guides/
+https://github.com/jenkinsci/archetypes
