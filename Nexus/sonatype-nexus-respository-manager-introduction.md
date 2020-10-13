@@ -70,7 +70,7 @@ Let's do a sample to demostrate how to make use of proxy repository to cache pac
   </settings>
   ```  
 
-- 3 Create a sample maven project  
+- 3. Create a sample maven project  
   - 3.1 Create a maven project.
     ```bash
     # create sample maven project.
