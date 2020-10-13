@@ -122,6 +122,13 @@ Let's do a sample to demostrate how to make use of proxy repository to cache pac
     ```
     Yep, packages are downloaded from the local nexus server.
 
+    Verify if the package works
+    ```bash
+    java -cp target/my-app-1.0-SNAPSHOT.jar com.mycompany.app.App
+
+    # output: Hello World!
+    ```
+
     Browse the `maven-central` repository, you could see `gson` & `junit` packages are cached. 
     ![maven-central](./maven-central-repo.png)
 
