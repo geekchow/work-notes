@@ -71,12 +71,12 @@ Let's do a sample to demostrate how to make use of proxy repository to cache pac
   ```  
 
 - 3. Create a sample maven project  
-  - 3.1 Create a maven project.
+  - 1. Create a maven project.
     ```bash
     # create sample maven project.
     mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
     ```
-  - 3.2 Specify local nexus repository.  
+  - 2. Specify local nexus repository.  
     ```xml
     <project>
       ....
@@ -88,7 +88,7 @@ Let's do a sample to demostrate how to make use of proxy repository to cache pac
       </repositories>
     </project>
     ```
-  - 3.3 Package the project verify that packages are download from nexus server.  
+  - 3. Package the project verify that packages are download from nexus server.  
     put some dependencies into `pom.xml` file  
 
     ```xml
