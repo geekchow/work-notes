@@ -128,3 +128,4 @@ Let's do a sample to demostrate how to make use of proxy repository to cache pac
 ## references
 https://blog.sonatype.com/using-nexus-3-as-your-repository-part-1-maven-artifacts
 https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
+https://github.com/google/gson
