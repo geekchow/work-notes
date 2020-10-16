@@ -59,9 +59,11 @@ Step 1: Create the Plugin Structure
 
 ## Build Plugins
 
-`mvn package`
+`mvn package`: Build the source code and generate .hpi, .jar files.
 
-`mvn install` 
+`mvn install`: Install maven dependencies.
+
+`mvn hpi:run`: Debug the plugin with a local jenkin master instance.
 
 references
 https://www.jenkins.io/blog/2017/08/07/intro-to-plugin-development/
