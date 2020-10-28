@@ -60,6 +60,7 @@ Step 1: Create the Plugin Structure
 ## Build Plugins
 
 `mvn package`: Build the source code and generate .hpi, .jar files.
+`mvn package -DskipTests`: Build without running tests.
 
 `mvn install`: Install maven dependencies.
 
