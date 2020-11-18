@@ -1,5 +1,3 @@
-```markmap {scale=1.1}
-
 # A hybrid mobile application base on angularjs
 
 ## Optimization
@@ -129,4 +127,3 @@ organizable/reusable/standarised css components
   - one code base
   - customized ui
   - live reload(dev)
-```
