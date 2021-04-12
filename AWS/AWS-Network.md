@@ -34,6 +34,8 @@ outbound traffic(egress)
 A router table defines a set of rules, that are used to determine where 
 network traffic is directed.
 
+Router table is associated with VPC and specific Subnets within it.
+
 ![Route-Table-Routes](Route-Table-Routes.png)
 
 The first record is to router traffic within VPC
