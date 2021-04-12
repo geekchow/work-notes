@@ -49,3 +49,11 @@ The second is for the internet access.
 
 How NAT works?
 ![how NAT works](NAT.png)
+
+## VPN connections
+To secure the connection between AWS vpc & on-premise.
+
+- AWS supports gateways to connect to the VCP from the local networks.
+- Gateways are effetively VPN endpoints
+- The Virtual Private Gateway(VPG) is implemented in the Cloud.
+- The Customer Gateway (CGW) is implemented in the customer network.
