@@ -1,6 +1,6 @@
 # Certificate pinning
 
-When developing a mobile application, especially financial apps. Security is a must to be take into consideration. 
+When developing a mobile application, especially financial apps. Security is a must to be taken into consideration. 
 Then, how can we proceted our data through the internet, between client and server. You may say we have Https which 
 could protect our data transfrom on the internet. But is it really safety?  There are several scenarios https fails to 
 protect you.
