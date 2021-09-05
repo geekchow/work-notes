@@ -12,3 +12,9 @@ AWS Elastic Beantalk:  https://aws.amazon.com/elasticbeanstalk/faqs/
 
 ## Free online training 
 https://www.aws.training/Details/eLearning?id=34737
+
+## CSA pro 知识点
+https://www.mindmeister.com/1587726848
+
+## CSA pro exam readiness
+https://www.mindmeister.com/1608001773
