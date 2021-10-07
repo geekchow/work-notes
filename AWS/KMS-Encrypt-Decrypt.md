@@ -1,0 +1,1 @@
+https://www.humankode.com/security/how-to-encrypt-secrets-with-the-aws-key-management-service-kms
