@@ -1,0 +1,6 @@
+blueocean
+git-changelog
+github-branch-source
+job-dsl
+scm-api
+workflow-multibranch
