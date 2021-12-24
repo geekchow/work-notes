@@ -20,6 +20,13 @@ docker run -p 8080:8080 -p 50000:50000 -v ~/jenkins_home:/var/jenkins_home jenki
 ./build.sh
 # run the image
 ./run.sh
+
+# ls all docker containers
+docker ps 
+
+# ssh on to the docker container
+docker exec -it <container name> /bin/bash
+
 ```
 
 https://hub.docker.com/_/jenkins
