@@ -57,3 +57,12 @@ To secure the connection between AWS vpc & on-premise.
 - Gateways are effetively VPN endpoints
 - The Virtual Private Gateway(VPG) is implemented in the Cloud.
 - The Customer Gateway (CGW) is implemented in the customer network.
+
+## Transit Gateway
+- Contralizes regional network management
+- Works with multiple VPCs.
+- Can be peered across multiple AWS accounts.
+- Works with multiple VPN connections
+- Works with multiple AWS Direct Connect gateways.
+
+![TransitGateway + DirectConnect + VPN](TransitGateway+DirectConnect+VPN.png)
