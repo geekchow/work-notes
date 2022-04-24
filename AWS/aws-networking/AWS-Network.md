@@ -44,11 +44,23 @@ The second is for the internet access.
 ## Network Address Translation(NAT)
 - NAT is used to interconnect private networks and public networks.
 - An Elastic IP is associated with the NAT instance for the publich-facing side.
-- Instances in the private subnet of the VPC use the NAT to connect to the internet.
-- NAT can be implemented using a dedicated NAT instance or using an AWS NAT Gateway
+- Instances in the private subnet of the VPC use the NAT to connect to the internet(think yum updates, external database connections, wget calls, OS patch, etc).
+- It only works one way. The internet cannot get through your NAT to your private resources unless you explicitly allow it.
+- NAT can be implemented using a dedicated NAT instance or using an AWS NAT Gateway.
+- You’ll need one in each AZ (for high availability), since they only operate in a single AZ.
 
 How NAT works?
 ![how NAT works](NAT.png)
+
+## Internet Gateway
+- An Internet Gateway (IGW) is a logical connection between an Amazon VPC and the Internet. It is not a physical device
+- If a VPC does not have an Internet Gateway, then the resources in the VPC cannot be accessed from the Internet (unless the traffic flows via a corporate network and VPN/Direct Connect).
+- An Internet Gateway allows resources within your VPC to access the internet, and vice versa. In order for this to happen, there needs to be a routing table entry allowing a subnet to access the IGW.
+- A subnet is deemed to be a Public Subnet if it has a Route Table that directs traffic to the Internet Gateway.
+
+Where NAT & IGW stand
+![Where NAT & IGW stands](./NAT-vs-IGW.png)
+
 
 ## VPN connections
 To secure the connection between AWS vpc & on-premise.
@@ -66,3 +78,7 @@ To secure the connection between AWS vpc & on-premise.
 - Works with multiple AWS Direct Connect gateways.
 
 ![TransitGateway + DirectConnect + VPN](TransitGateway+DirectConnect+VPN.png)
+
+## A typical AWS VPC network architecture
+
+![Network Architecture](./typical-vpc-networking.png)
