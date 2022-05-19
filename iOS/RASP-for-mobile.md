@@ -1,4 +1,4 @@
-# Runtime application security protection
+# Runtime application self-protection
 
 ## Threatens
   - compromised device
