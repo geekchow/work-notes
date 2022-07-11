@@ -48,3 +48,11 @@ Proguard is not having Kotlin specific optimizations. 	R8 is having Kotlin speci
 Proguard does not propagate constant arguments. 	R8 propagate constant arguments. 
 
 [Origin from](https://www.geeksforgeeks.org/difference-between-proguard-and-r8-in-android/)
+
+>References:
+
+https://www.guardsquare.com/blog/proguard-and-r8
+
+https://stackoverflow.com/questions/52818404/android-java-transition-migration-from-proguard-to-r8
+
+https://www.guardsquare.com/blog/comparison-proguard-vs-r8-october-2019-edition
