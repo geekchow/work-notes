@@ -13,7 +13,6 @@ find . -type f -name *.md
 # maxdepth 1 represent only search current directory.
 # Caution: for zsh on mac, name pattern with * must be quoted 
 # for eg: `*.md`, otherwise zsh can't interpert your cmd.
-# https://stackoverflow.com/questions/12753889/why-is-zsh-globbing-not-working-with-find-command
 find . -maxdepth 2 -type f -name *.md
 
 ```
@@ -23,4 +22,14 @@ find . -maxdepth 2 -type f -name *.md
 
 # find all markdown files and list the details.
 find . -type f -name "*.md" -exec ls -l {} \;
+
+# make 'phil' to be all txt file owner
+find /home/user -name *.txt -exec chown phil {} \;
+
+# list all mp3 files and printout the file info
+find . -type f -name "*.mp3" -exec file {} \;
 ```
+
+> references
+- https://stackoverflow.com/questions/12753889/why-is-zsh-globbing-not-working-with-find-command
+- https://www.baeldung.com/linux/find-exec-command
