@@ -111,7 +111,7 @@ echo $(($RANDOM % 10 + 1))
 
 ```
 
-#### compare values with tests
+### compare values with tests
 
 [ ... ] is alias for test and or evaludate expresssions.
 
@@ -153,6 +153,11 @@ man test
 #output: 0
 [[ "bat" =~ c.* ]]; echo $?
 #output: 1
+
+#judge if a variable is empty
+[ -z $myfile ]; echo $?
+# output:
+# 0
 ```
 
 ### Formatting & styling string
