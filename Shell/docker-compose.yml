@@ -1,0 +1,7 @@
+version: 1.0.0
+
+services:
+  phil-ubuntu-compose:
+    image: ubuntu:trusty
+    stdin_open: true # docker run -i
+    tty: true        # docker run -d
