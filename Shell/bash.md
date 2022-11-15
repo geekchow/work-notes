@@ -256,3 +256,31 @@ echo ${headquaters["southern"]}
 
 
 ```
+
+### Bash Control Structures
+
+#### Conditional clause
+```shell
+declare -i $a=2
+
+if [[ $a -gt 1 ]]; then
+    echo "$a is larger than 1"
+else
+    echo "$a is not large than 1"
+fi
+
+if (( $a > 1 ))
+then
+    echo "$a is larger than 1"
+fi
+
+if [[ $a -gt 1 ]]; then
+    echo "$a is larger than 3"
+elif (( $a > 3 )); then
+    echo "$a is larger than 1"
+else 
+    echo " echo $a is not larger than 1"
+fi
+```
+
+#### loops & while

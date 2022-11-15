@@ -1,0 +1,17 @@
+version: "3.4"
+services:
+  gogs-local:
+    image: gogs/gogs
+    container_name: gogs-local-server
+    networks:
+      - gogs-internal
+    ports:
+      - 10022:22
+      - 10880:3000
+    volumes:
+      - "./data:/data gogs/gogs"
+
+networks:
+  gogs-internal:
+    name: gogs-internal
+
