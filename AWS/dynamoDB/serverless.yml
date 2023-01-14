@@ -1,0 +1,86 @@
+service: product-avg-report
+
+
+provider:
+  name: aws
+  runtime: ndoejs16.x
+  stage: staging
+  profile: saml
+  iam: 
+    role: 
+      statements:
+        # policy to allow Report function to operate on dynamdb table: ProductPriceTable
+        - Effect: Allow
+          Action: 
+            - "dynamodb:BatchGetItem"
+            - "dynamodb:BatchWriteItem"
+            - "dynamodb:PutItem"
+            - "dynamodb:DescribeTable"
+            - "dynamodb:DeleteItem"
+            - "dynamodb:GetItem"
+            - "dynamodb:Scan"
+            - "dynamodb:Query"
+            - "dynamodb:UpdateItem"
+          Resource: { Ref: ProductPriceTable }
+          # allow ChangeDetector to publish event to SNS Topic: ReportUpdateTopic
+          - Effect: Allow
+            Action: 
+              - SNS:Publish
+            Resource: { Ref: ReportUpdateTopic }
+          # allow ChangeDetector to qualified as stream trigger
+          - Effect: Allow
+            Action:
+              - "dynamodb:DescribeStream"
+              - "dynamodb:GetRecords"
+              - "dynamodb:GetShardIterator"
+              - "dynamodb:ListStreams"
+            Resource:
+              - "Fn:GetAtt" : ["ProductPriceTable", "StreamArn"]
+
+resources:
+  Resources:
+    ProductPriceTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: product_price
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
+        AttributeDefinitions:
+          - AttributeName: product_name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: product_name
+            KeyType: HASH
+        ProvisionedThroughout:
+          ReadCapacityUnits: 3
+          WriteCapacityUnits: 3
+    ReportUpdateTopic:
+      Type: AWS:SNS::Topic
+      Properties:
+        TopicName: ReportUpdateTopic
+
+functions:
+  Report:
+    image:
+      name: avg-report
+      cmd: index.Report
+    events:
+      # subscribe Report lambda function to SNS Topic ReportUpdateTopic
+      - sns:
+          arn: { Ref: ReportUpdateTopic }
+          topicName: ReportUpdateTopic
+  ChangeDetector:
+    image:
+      name: avg-report
+      command: index.ChangeDetector
+    environment:
+      SNS_ARN: { Ref: ReportUpdateTopic }
+    events:
+      # Register ChangeDetector lambda function as DynamoDB ProductPriceTable's Stream trigger.
+      - stream:
+          type: dynamodb
+          batchSize: 1
+          startingPosition: LATEST
+          arn: 
+            Fn::GetAtt: [ProductPriceTable, StreamArn]
+  
