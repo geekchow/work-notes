@@ -92,3 +92,33 @@ conn.close()
 
 ```
 
+## Deal with json type column using `psycopg2.extras.Json`
+
+`psycopg2.extras.Json` is a type adapter provided by the `psycopg2` library for handling JSON data in Python. It allows you to insert JSON data into a PostgreSQL database using the psycopg2 library and have it automatically converted to the appropriate format for storage in the database.
+
+Here's an example of how you can use psycopg2.extras.Json:
+
+```python
+import psycopg2
+import psycopg2.extras
+
+conn = psycopg2.connect(<your_database_connection_string>)
+cur = conn.cursor()
+
+# Example JSON data
+json_data = {'age': 30, 'address': '123 Main St.'}
+
+# SQL INSERT statement with placeholders
+insert_sql = "INSERT INTO your_table (json_column) VALUES (%s)"
+
+# Use the execute method to insert the JSON data
+cur.execute(insert_sql, (psycopg2.extras.Json(json_data),))
+
+# Commit the transaction
+conn.commit()
+
+# Close the cursor and connection
+cur.close()
+conn.close()
+
+```
