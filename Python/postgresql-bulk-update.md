@@ -60,3 +60,35 @@ conn.close()
 
 In this example, the execute_values method will automatically create a batch of multiple INSERT statements, each with a call to the nextval function to get the next value from the sequence for the id column. The batch size can be specified by passing the page_size argument to the method.
 
+## How to do it when the table contains a json type column
+
+use `json.dumps` to dumps object to string, before insert into json field.
+
+```python
+import psycopg2
+import psycopg2.extras
+import json
+
+conn = psycopg2.connect(<your_database_connection_string>)
+cur = conn.cursor()
+
+# Example data to insert
+data = [(1, "John", json.dumps({'age': 30, 'address': '123 Main St.'})),
+        (2, "Jane", json.dumps({'age': 35, 'address': '456 Elm St.'})),
+        (3, "Jim", json.dumps({'age': 40, 'address': '789 Oak St.'}))]
+
+# SQL INSERT statement with placeholders
+insert_sql = "INSERT INTO your_table (column1, column2, json_column) VALUES %s"
+
+# Use the execute_values method to perform the bulk insert
+psycopg2.extras.execute_values(cur, insert_sql, data)
+
+# Commit the transaction
+conn.commit()
+
+# Close the cursor and connection
+cur.close()
+conn.close()
+
+```
+
