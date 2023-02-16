@@ -1,28 +1,15 @@
-# IPA File Format
+# What an ipa package contains, and the relationship among them?
 
-> An IPA archive is the de facto way to package applications for iOS. The extension has no official definition, but is commonly called iPhone Application by the iOS community. The file is just a renamed ZIP archive. Although any computer with a ZIP archive reader can extract an IPA, PNG images (e.g. the app's icon files) are typically in a proprietary variant of the PNG format instead of the standardized PNG format, and the application binary is encrypted (DRM) which prevents examination of the binary.
+An IPA (iOS App Archive) package is a compressed file format used to distribute and install iOS applications on devices. An IPA file is essentially a ZIP archive that contains several key components:
 
-## Contents
+    Application binary: This is the compiled executable code that runs the app. It is typically located in the top-level directory of the IPA file and has the extension ".app".
 
-> As an IPA file is just a renamed ZIP archive, its structure is available from PKWARE.
+    Info.plist: This is a property list file that contains metadata about the app, such as its name, version, and bundle identifier. It is located in the top-level directory of the IPA file and is used by the operating system to manage the app.
 
-- iTunesArtwork
-- iTunesMetadata.plist
-- Payload/
-  - {ApplicationName}.app/
-  - (various application files)
+    Code signature: This is a set of files and directories that are used to sign and verify the app's code. The code signature is stored in a directory named "_CodeSignature" in the top-level directory of the IPA file.
 
-## Creation
-> IPA files are typically created through Xcode, but may be created manually:
+    Provisioning profile: This is a configuration file that contains information about the app's entitlements, device restrictions, and distribution permissions. It is typically located in the top-level directory of the IPA file and has the extension ".mobileprovision".
 
-- Build application
-- Locate the .app folder
-- Create a folder named Payload
-- Place your .app folder in it
-- Create a 512x512 JPEG version of your icon (see above section)
-- Save it as iTunesArtwork (no extension)
-- Create your iTunesMetadata.plist and save it
-- "ZIP" the contents
-    - iTunesArtwork
-    - iTunesMetadata.plist
-    - Payload/
+    Resources: This includes assets such as images, sounds, and other media files that are used by the app. Resources are located in the "Payload" directory inside the IPA file.
+
+The relationship among these components is tightly coupled and critical to the functioning of the app. The application binary is the core of the app, and is managed by the operating system using information from the Info.plist and provisioning profile. The code signature is used to verify that the binary has not been tampered with or modified since it was signed. The resources are loaded by the app at runtime and used to provide the app's functionality and user interface. The provisioning profile is used to ensure that the app is distributed and installed correctly, with the appropriate permissions and restrictions for the target device.
