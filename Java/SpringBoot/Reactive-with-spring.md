@@ -4,9 +4,9 @@
 
 ![Reactive Programming](./Reactive-Programming.png)
 
-![Reactive-with-spring](./Reactive-with-spring.md)
-
 ![Spring-Reactor-Pattern](./Spring-Reactor-Pattern.png)
+
+![Spring-WebFlux-vs-MVC](./Spring-WebFlux-vs-MVC.png)
 
 ![Request-End-to-End-Flow](./Request-End-to-End-Flow.png)
 
