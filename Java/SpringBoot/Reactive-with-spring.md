@@ -2,15 +2,15 @@
 
 ## Basic Concepts
 
-![Reactive Programming](./Reactive-Programming.png)
+![Reactive Programming](./Reactive-Programming.webp)
 
-![Spring-Reactor-Pattern](./Spring-Reactor-Pattern.png)
+![Spring-Reactor-Pattern](./Spring-Reactor-Pattern.webp)
 
-![Spring-WebFlux-vs-MVC](./Spring-WebFlux-vs-MVC.png)
+![Spring-WebFlux-vs-MVC](./Spring-WebFlux-vs-MVC.webp)
 
-![Request-End-to-End-Flow](./Request-End-to-End-Flow.png)
+![Request-End-to-End-Flow](./Request-End-to-End-Flow.webp)
 
-![Mongodb-Reactive-API](./Mongodb-Reactive-API.png)
+![Mongodb-Reactive-API](./Mongodb-Reactive-API.webp)
 
 
 ## References
