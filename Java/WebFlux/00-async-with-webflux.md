@@ -77,3 +77,6 @@
 
 ![Considerations of webflux](./22-webflux-Considerations.webp)
 
+
+> References
+- https://www.youtube.com/watch?v=M3jNn3HMeWg&t=71s
