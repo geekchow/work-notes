@@ -122,3 +122,37 @@ cur.close()
 conn.close()
 
 ```
+
+## Update a field of Json type column
+
+table: users
+columns: 
+        name: string
+        property: {"height":1.74, "weight": 67, "skills": {"python":"good", "typescript": "excellent"}}
+
+```python
+import psycopg2
+import psycopg2.extras
+
+conn = psycopg2.connect(<your_database_connection_string>)
+cur = conn.cursor()
+
+skills = {
+        "csharp": "proficient",
+        "jenkins": "master"
+}
+updateSql = """update users
+        set property = jsonb_set(property, '{skills}', '%s', true)
+        where name = '%s'
+""" % (json.dumps(skills), "phil")
+
+cur.execute(updateSql)
+
+# Commit the transaction
+conn.commit()
+
+# Close the cursor and connection
+cur.close()
+conn.close()
+
+```
