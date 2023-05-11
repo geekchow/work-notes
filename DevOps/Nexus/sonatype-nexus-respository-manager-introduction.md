@@ -31,8 +31,8 @@ Let's do a sample to demostrate how to make use of proxy repository to cache pac
   | Name | Type | Purpose |
   |:----:|:----:|:----:|
   | maven-contral | proxy | A repository that proxies everything you download from Maven Central. Next time you download the same dependency, it will be cached in your Nexus. |
-  | maven-release | hosted | A repository for Maven artifacts that you deploy with -SNAPSHOT in the end of the version tag of your pom.xml `<version>1.0.0</version>` |
-  | maven-snapshots | hosted | A repository for Maven artifact that you deploy without -SNAPSHOT in the end of the version tag of your pom.xml: `<version>1.0.0-SNAPSHOT</version>` |
+  | maven-snapshots | hosted | A repository for Maven artifacts that you deploy with -SNAPSHOT in the end of the version tag of your pom.xml `<version>1.0.0-SNAPSHOT</version>` |
+  | maven-release | hosted | A repository for Maven artifact that you deploy without -SNAPSHOT in the end of the version tag of your pom.xml: `<version>1.0.0</version>` |
   | maven-public | group | This will group all the above repos and provide you a single URL to configure your clients to download from/deploy to.|
 
   At the very beginning, since no request is made this nexus server, so there is no packages under `maven-central`.  
