@@ -1,5 +1,53 @@
 # `requests` pip package 
 
+## basic request & respsonse operation
+
+- Get Operation
+
+  ```python
+  # Passing HTTP Heades into a Python requests.get() Function
+  import requests
+
+  url = 'https://httpbin.org/get'
+  headers = {'Content-Type': 'text/html'}
+
+  print(requests.get(url, headers=headers))
+
+  # Returns: <Response [200]>
+  ```
+
+- Post operation with customized headers
+
+  ```python
+  # Passing HTTP Headers into a Python requests.post() Function
+  import requests
+  resp = requests.post(
+      'https://httpbin.org/post', 
+      headers={"Content-Type": "application/json"})
+
+  print(resp)
+
+  # Returns: <Response [200]>
+
+  print(resp.headers.get('content-type'))
+
+  # Returns: application/json
+
+  ```
+
+- Serializing a GET Request with .json()
+
+  ```python
+  # Serializing a GET Request with .json()
+  import requests
+  resp = requests.get('https://reqres.in/api/users')
+  resp_dict = resp.json()
+
+  print(type(resp_dict))
+
+  # Returns: <class 'dict'>
+  ```
+
 ## session and cookies
 
 ### What is the difference between session and cookies?
