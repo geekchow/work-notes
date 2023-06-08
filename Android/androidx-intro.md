@@ -29,4 +29,5 @@ implementation 'androidx.appcompat:appcompat:1.0.2'
 
 References:
 - https://www.geeksforgeeks.org/difference-between-androidx-and-android-support-libraries/
-- https://developer.android.com/jetpack/androidx#:~:text=AndroidX%20is%20a%20major%20improvement,feature%20parity%20and%20new%20libraries.
+- https://developer.android.com/jetpack/androidx#:~:text=AndroidX%20is%20a%20major%20improvement,feature%20parity%20and%20new%20libraries
+- https://juejin.cn/post/7034533747399589919
