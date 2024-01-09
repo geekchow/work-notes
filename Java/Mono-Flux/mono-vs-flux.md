@@ -59,5 +59,6 @@ public void givenFluxPublisher_whenSubscribeThenReturnMultipleValuesWithError() 
 
 - https://www.baeldung.com/reactor-core
 - https://www.baeldung.com/java-reactor-flux-vs-mono
+- https://www.baeldung.com/java-string-from-mono
 - https://www.youtube.com/watch?v=ckfqcfzCg3w
 - https://github.com/geekchow/spring-demo-reactive
