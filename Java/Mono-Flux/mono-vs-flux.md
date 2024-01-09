@@ -62,3 +62,4 @@ public void givenFluxPublisher_whenSubscribeThenReturnMultipleValuesWithError() 
 - https://www.baeldung.com/java-string-from-mono
 - https://www.youtube.com/watch?v=ckfqcfzCg3w
 - https://github.com/geekchow/spring-demo-reactive
+- https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html
