@@ -65,4 +65,4 @@ New to this? Don’t stress. Leverage ChatGPT technology to help you throughout 
 write a onboarding first mail for users who just signed up on our project management tool 'keto'
 ```
 
-
+origna from X:@heyrobinai
