@@ -9,3 +9,5 @@
 ## Training Materials
 
 [Slides content](https://github.com/geekchow/ckad-slides.git)
+
+[Exercise](https://github.com/geekchow/ckad.git)
