@@ -243,3 +243,20 @@ spec:
     - configMapRef:
         name: app-config
 ```
+
+## Inspect k8s api-resources 
+
+```shell
+kubectl explain deployment
+
+kubectl explain deployment.spec
+
+kubectl explain pod
+
+kubectl explain pod.spec.containers
+
+kubectl explain secret
+
+# check before apply 
+kubectl apply --dry-run=client -f task1-pod.yaml
+```
