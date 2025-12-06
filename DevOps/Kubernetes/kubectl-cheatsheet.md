@@ -260,3 +260,14 @@ kubectl explain secret
 # check before apply 
 kubectl apply --dry-run=client -f task1-pod.yaml
 ```
+
+## JsonPath to extract info
+
+```bash
+kubectl get pod storepod -o jsonpath="{.status.phase}"
+
+# beautify json output
+kubectl get pod storepod -o jsonpath="{.status.conditions}" | jq .
+
+
+```
