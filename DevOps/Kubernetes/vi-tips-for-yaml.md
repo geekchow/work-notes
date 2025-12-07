@@ -60,6 +60,12 @@ shit + <
 # a = all
 # q = quit
 # l = last one
+
+# in visual mode 
+# copy selected lines
+y
+# paste selected lines
+p
 ```
 
 ### Deletion 
