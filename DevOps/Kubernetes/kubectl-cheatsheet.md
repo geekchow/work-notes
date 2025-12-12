@@ -16,6 +16,7 @@ kubectl get ns
 kubectl create ns my-namespace
 kubectl delete ns my-namespace
 kubectl get pods -n my-namespace
+
 ```
 
 ## 🧱 Pods
@@ -29,6 +30,7 @@ kubectl logs -f nginx
 kubectl logs nginx --previous
 kubectl exec -it nginx -- /bin/bash
 kubectl delete pod nginx
+kubectl get pods --show-labels
 ```
 
 ## 📄 Deployments
