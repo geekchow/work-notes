@@ -31,6 +31,7 @@ kubectl logs nginx --previous
 kubectl exec -it nginx -- /bin/bash
 kubectl delete pod nginx
 kubectl get pods --show-labels
+kubectl logs -f nginx -c my-sidecar-container
 ```
 
 ## 📄 Deployments
