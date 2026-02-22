@@ -32,6 +32,9 @@ G
 ## Editing
 
 ```bash
+# open a new line
+o
+
 # undo
 u
 
