@@ -71,4 +71,15 @@ podman inspect luna-app \
 podman images --digests > /opt/course/14/digests
 ```
 
+export app log to host path
+```bash
+# Create the host directory first (recommended to avoid permission issues)
+mkdir -p ~/container-logs/myapp
+
+docker run -d \
+  --name my-container \
+  -v ~/container-logs/myapp:/app/logs \          # ← host path : container path
+  my-image:latest
+```
+
 The mock question adds complexity around **port mapping**, **EXPOSE** directives, **container inspection**, and **image digest** listing — all common CKAD exam patterns.
