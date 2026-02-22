@@ -1,3 +1,5 @@
+# Pod and Config
+
 ## Kubernetes Pod — Summary
 
 A **Pod** is the smallest deployable unit in Kubernetes, wrapping one or more containers that share:
