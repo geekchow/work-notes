@@ -16,7 +16,7 @@
       "Bash(cp:*)",
       "Bash(mv:*)",
       "Bash(chmod:*)",
-
+      "Bash(gh repo:*)",
       "Bash(python3:*)",
       "Bash(python:*)",
       "Bash(pip:*)",
