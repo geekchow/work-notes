@@ -1,0 +1,69 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(echo:*)",
+      "Bash(curl:*)",
+      "Bash(sed:*)",
+      "Bash(awk:*)",
+      "Bash(jq:*)",
+      "Bash(touch:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(chmod:*)",
+
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(pip:*)",
+      "Bash(pip3:*)",
+      "Bash(uv:*)",
+      "Bash(uvicorn:*)",
+      "Bash(gunicorn:*)",
+      "Bash(pytest:*)",
+      "Bash(ruff:*)",
+      "Bash(black:*)",
+      "Bash(isort:*)",
+      "Bash(mypy:*)",
+      "Bash(pylint:*)",
+      "Bash(flake8:*)",
+      "Bash(coverage:*)",
+      "Bash(jupyter:*)",
+      "Bash(ipython:*)",
+
+      "Bash(poetry:*)",
+      "Bash(conda:*)",
+      "Bash(virtualenv:*)",
+      "Bash(source:*)",
+
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(mvn:*)",
+      "Bash(java:*)",
+      "Bash(docker:*)",
+      "Bash(docker-compose:*)",
+      "Bash(kubectl:*)",
+
+      "WebFetch(*)",
+      "WebSearch(*)"
+    ],
+    "deny": [
+      "Bash(sudo rm -rf /*)",
+      "Bash(shutdown:*)",
+      "Bash(reboot:*)"
+    ]
+  },
+  "mcpServers": {
+    "chrome": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-server-chrome"],
+      "type": "stdio"
+    }
+  },
+  "autoApprove": true
+}
