@@ -50,7 +50,41 @@
       "Bash(kubectl:*)",
 
       "WebFetch(*)",
-      "WebSearch(*)"
+      "WebSearch(*)",
+
+      "Bash(sw_vers:*)",
+      "Bash(xcodebuild:*)",
+      "Bash(swift:*)",
+      "Bash(xcodegen generate:*)",
+      "Bash(/usr/local/bin/xcodegen generate:*)",
+      "Bash(xcrun simctl:*)",
+      "Bash(xcrun devicectl:*)",
+      "Bash(open:*)",
+      "Bash(defaults read:*)",
+      "Bash(osascript:*)",
+      "Bash(plutil:*)",
+      "Bash(sips:*)",
+      "Bash(/usr/libexec/PlistBuddy:*)",
+
+      "Bash(aws:*)",
+      "Bash(sam:*)",
+      "Bash(sam build:*)",
+      
+      "Bash(brew list:*)",
+      "Bash(brew install:*)",
+      "Bash(brew unlink:*)",
+      "Bash(brew link:*)",
+      "Bash(brew reinstall:*)",
+
+      "Bash(wc:*)",
+      "Bash(git -C:*)",
+      "Bash(git worktree add:*)",
+      "Bash(git commit:*)",
+      "Bash(python3 -m py_compile:*)",
+      "Bash(python3 -m venv:*)",
+
+      "Bash(gh pr create:*)",
+      "Bash(.venv/bin/pip install:*)"
     ],
     "deny": [
       "Bash(sudo rm -rf /*)",
