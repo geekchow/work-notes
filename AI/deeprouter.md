@@ -3,6 +3,7 @@
 make api call
 
 ```shell
+# quick response model "model": "gpt-4o-mini"
 curl https://deeprouter.top/v1/chat/completions \
    -H 'Content-Type: application/json' \
    -H 'Authorization: Bearer token ' \
@@ -11,6 +12,8 @@ curl https://deeprouter.top/v1/chat/completions \
    "messages": [{"role": "user", "content": "Say this is a test!"}],
    "temperature": 0.7
  }'
+
+ 
 ```
 
 Response
