@@ -3,15 +3,16 @@
 make api call
 
 ```shell
-# quick response model "model": "gpt-4o-mini"
+# quick response model: gpt-4o-mini
 curl https://deeprouter.top/v1/chat/completions \
-   -H 'Content-Type: application/json' \
-   -H 'Authorization: Bearer token ' \
-   -d '{
-   "model": "gpt-5.2-chat",
-   "messages": [{"role": "user", "content": "Say this is a test!"}],
-   "temperature": 0.7
- }'
+  -H 'Content-Type: application/json' \
+  -H "Authorization: Bearer $LOCAL_UPSTREAM_KEY" \
+  -d '{
+    "model": "gpt-4o-mini",
+    "messages": [{"role": "user", "content": "who are you?"}],
+    "temperature": 0.7
+  }' \
+  | jq
 
  
 ```
