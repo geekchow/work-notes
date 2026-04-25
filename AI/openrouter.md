@@ -1,3 +1,8 @@
+# OpenRouter 
+
+
+## Call via curl
+
 ```shell
 curl https://openrouter.ai/api/v1/chat/completions \
   -H "Authorization: Bearer $OPENROUTER_API_KEY" \
@@ -42,3 +47,35 @@ gpt model will get error
   ```
 
 all model info could be found [fulllist of models in openrouter](./openrouter.json)
+
+
+## Config OpenRouter as provider of OpenClaw
+
+> https://openrouter.ai/docs/guides/coding-agents/openclaw-integration
+
+config file `~/.openclaw/openclaw.json`
+
+```json
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "openrouter/openai/gpt-oss-120b:free",
+        "fallbacks": [
+          "openrouter/deepseek/deepseek-v3.2"
+        ]
+      },
+      "models": {
+        "openrouter/openai/gpt-oss-120b:free": {},
+        "openrouter/deepseek/deepseek-v3.2": {}
+      },
+      "workspace": "/Users/geekchow/.openclaw/workspace",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    }
+  },
+```
