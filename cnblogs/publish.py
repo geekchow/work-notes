@@ -106,3 +106,51 @@ def load_credentials(env_path: str = ENV_FILE) -> dict:
         "username": os.environ.get("CNBLOGS_USERNAME", ""),
         "token": token,
     }
+
+
+class CnblogsClient:
+    """博客园 MetaWeblog (XML-RPC) 客户端。server 可注入，便于测试。"""
+
+    def __init__(self, blogname: str, username: str, token: str, server=None):
+        self.url = f"https://rpc.cnblogs.com/metaweblog/{blogname}"
+        self.username = username
+        self.token = token            # token 当作密码使用
+        self.blogid = blogname        # blogid 任意，用博客名即可
+        self.server = server or xmlrpc.client.ServerProxy(self.url, encoding="UTF-8")
+
+    def new_post(self, title, html, tags, categories=None, publish=True) -> str:
+        post = {
+            "title": title,
+            "description": html,
+            "categories": categories or [],
+            "mt_keywords": ",".join(tags or []),
+            "dateCreated": xmlrpc.client.DateTime(datetime.now(timezone.utc)),
+        }
+        return self.server.metaWeblog.newPost(
+            self.blogid, self.username, self.token, post, publish
+        )
+
+    def edit_post(self, postid, title, html, tags, categories=None, publish=True) -> bool:
+        post = {
+            "title": title,
+            "description": html,
+            "categories": categories or [],
+            "mt_keywords": ",".join(tags or []),
+        }
+        return self.server.metaWeblog.editPost(
+            postid, self.username, self.token, post, publish
+        )
+
+    def upload_media(self, png_path: str) -> str:
+        """上传 PNG，返回博客园托管的图片 URL。"""
+        with open(png_path, "rb") as f:
+            bits = f.read()
+        data = {
+            "name": os.path.basename(png_path),
+            "type": "image/png",
+            "bits": xmlrpc.client.Binary(bits),
+        }
+        result = self.server.metaWeblog.newMediaObject(
+            self.blogid, self.username, self.token, data
+        )
+        return result["url"]
