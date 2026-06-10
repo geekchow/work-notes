@@ -73,3 +73,20 @@ def render_and_embed_mermaid(md_text, render_png, upload_png) -> str:
         return f'<img src="{url}" alt="mermaid diagram">'
 
     return MERMAID_RE.sub(repl, md_text)
+
+
+def repo_relative_key(path: str) -> str:
+    """把任意路径规范化为相对仓库根目录的路径，作为状态文件的稳定键。"""
+    return os.path.relpath(os.path.abspath(path), REPO_ROOT)
+
+
+def load_state(path: str = STATE_FILE) -> dict:
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+
+def save_state(state: dict, path: str = STATE_FILE) -> None:
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=2)
