@@ -30,6 +30,7 @@ python cnblogs/publish.py path/to/article.md [more.md ...]
 | `cnblogs/.env.example` | New. Template listing the 3 credential vars (committed) |
 | `cnblogs/.env` | Real credentials. **Gitignored**, never committed |
 | `cnblogs/requirements.txt` | New. `python-frontmatter`, `markdown`, `python-dotenv` |
+| (external) `mmdc` | Prerequisite: mermaid-cli on PATH (`npm i -g @mermaid-js/mermaid-cli`). Needed only when an article contains mermaid blocks |
 | `cnblogs/.publish_state.json` | Idempotency state, committed so post ids survive across checkouts |
 | `cnblogs/publish.yml` | **Deleted** (was the GitHub Actions workflow) |
 | `cnblogs/README.md` | Rewritten: local-only usage; Medium and Actions sections removed |
@@ -62,6 +63,30 @@ cnblogs_categories: ["[随笔分类]AI"]       # optional → cnblogs categories
 
 `canonical_url` (Medium-only) is no longer used.
 
+## Mermaid rendering
+
+cnblogs cannot render mermaid code blocks, so they are pre-rendered to PNG and embedded as
+uploaded images during publish.
+
+For each ` ```mermaid ` fenced block in the markdown source:
+
+1. Write the block body to a temp `.mmd` file.
+2. Render to PNG with mermaid-cli: `mmdc -i tmp.mmd -o tmp.png -b white -s 2`
+   (white background, 2x scale for crispness).
+3. Upload the PNG to cnblogs via `metaWeblog.newMediaObject` (struct: `name`, `type=image/png`,
+   `bits`=base64 of the file) and capture the returned `url`.
+4. Replace the mermaid block in the markdown with `<img src="<url>" alt="mermaid diagram">`
+   (raw HTML passes through the markdown→HTML conversion untouched).
+
+This pre-processing happens before the markdown→HTML step, per file, using the already-built
+`CnblogsClient` for the upload.
+
+If `mmdc` is not installed and a file contains mermaid blocks, the script errors out with a
+clear message naming the install command, rather than publishing a broken post.
+
+Known limitation (acceptable for minimal scope): re-publishing a file re-uploads its mermaid
+PNGs, creating fresh media objects each time rather than reusing previous ones.
+
 ## State & idempotency
 
 - State file: `cnblogs/.publish_state.json`, anchored to the script's own directory so its
@@ -76,7 +101,9 @@ cnblogs_categories: ["[随笔分类]AI"]       # optional → cnblogs categories
 1. Load `cnblogs/.env`; build the `CnblogsClient` (error out if token missing).
 2. For each file path argument that exists and ends in `.md`:
    - Load front matter; skip with a message if no `title`.
-   - Convert `post.content` markdown → HTML5 (`fenced_code`, `tables`, `toc`,
+   - Render any mermaid blocks to PNG, upload them, and substitute `<img>` tags into the
+     markdown (see Mermaid rendering).
+   - Convert the resulting markdown → HTML5 (`fenced_code`, `tables`, `toc`,
      `codehilite`, `attr_list`).
    - Look up the repo-relative key in state.
    - `editPost` if a `cnblogs_id` exists, else `newPost` and record the id.
@@ -85,8 +112,7 @@ cnblogs_categories: ["[随笔分类]AI"]       # optional → cnblogs categories
 
 ## Out of scope (per minimal-change goal)
 
-- Mermaid pre-rendering — kept as a README caveat only.
-- Image relative-path rewriting — kept as a README caveat only.
+- Image relative-path rewriting (non-mermaid images) — kept as a README caveat only.
 - Retries / advanced error handling — unchanged (print and continue).
 - Jupyter `.ipynb` — convert to `.md` manually first, as noted in README.
 
@@ -97,3 +123,7 @@ cnblogs_categories: ["[随笔分类]AI"]       # optional → cnblogs categories
 - Re-run the same file → confirm the existing post is updated (no duplicate created).
 - Run with a file lacking `title` → confirm it is skipped with a message.
 - Run with no `cnblogs/.env` and no env vars → confirm a clear "missing token" error.
+- Run a file containing a ` ```mermaid ` block → confirm a PNG is uploaded and the published
+  post shows the diagram as an image (not raw code).
+- Run a file with a mermaid block while `mmdc` is uninstalled → confirm a clear error naming
+  the install command, and that no broken post is published.
