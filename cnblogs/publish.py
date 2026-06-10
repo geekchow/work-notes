@@ -90,3 +90,19 @@ def load_state(path: str = STATE_FILE) -> dict:
 def save_state(state: dict, path: str = STATE_FILE) -> None:
     with open(path, "w", encoding="utf-8") as f:
         json.dump(state, f, ensure_ascii=False, indent=2)
+
+
+def load_credentials(env_path: str = ENV_FILE) -> dict:
+    """从 cnblogs/.env 读取凭据（若文件不存在则仅用已有环境变量）。缺 token 直接报错。"""
+    load_dotenv(env_path)  # 文件不存在时是 no-op
+    token = os.getenv("CNBLOGS_TOKEN")
+    if not token:
+        raise SystemExit(
+            "缺少 CNBLOGS_TOKEN：请复制 cnblogs/.env.example 为 cnblogs/.env 并填写，"
+            "或在环境变量中设置。"
+        )
+    return {
+        "blogname": os.environ.get("CNBLOGS_BLOGNAME", ""),
+        "username": os.environ.get("CNBLOGS_USERNAME", ""),
+        "token": token,
+    }
