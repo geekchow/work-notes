@@ -14,7 +14,6 @@ import os
 import re
 import sys
 import json
-import base64
 import shutil
 import tempfile
 import subprocess
