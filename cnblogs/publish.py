@@ -38,3 +38,38 @@ def md_to_html(md_text: str) -> str:
         extensions=["fenced_code", "tables", "toc", "codehilite", "attr_list"],
         output_format="html5",
     )
+
+
+MERMAID_RE = re.compile(r"```mermaid[ \t]*\r?\n(.*?)\r?\n```", re.DOTALL)
+
+
+def render_mermaid_png(code: str, scale: int = 2) -> str:
+    """用 mermaid-cli 把一段 mermaid 源码渲染成 PNG，返回 PNG 路径。
+    未安装 mmdc 时直接报错，避免发布出缺图的文章。"""
+    if shutil.which("mmdc") is None:
+        raise RuntimeError(
+            "未找到 mmdc：请先安装 mermaid-cli： npm i -g @mermaid-js/mermaid-cli"
+        )
+    tmpdir = tempfile.mkdtemp(prefix="mermaid_")
+    mmd_path = os.path.join(tmpdir, "diagram.mmd")
+    png_path = os.path.join(tmpdir, "diagram.png")
+    with open(mmd_path, "w", encoding="utf-8") as f:
+        f.write(code)
+    subprocess.run(
+        ["mmdc", "-i", mmd_path, "-o", png_path, "-b", "white", "-s", str(scale)],
+        check=True,
+    )
+    return png_path
+
+
+def render_and_embed_mermaid(md_text, render_png, upload_png) -> str:
+    """把 md_text 中每个 ```mermaid 代码块渲染成 PNG、上传，并替换成 <img>。
+    render_png(code)->png_path 与 upload_png(png_path)->url 注入，便于测试。"""
+
+    def repl(match):
+        code = match.group(1)
+        png_path = render_png(code)
+        url = upload_png(png_path)
+        return f'<img src="{url}" alt="mermaid diagram">'
+
+    return MERMAID_RE.sub(repl, md_text)
