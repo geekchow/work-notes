@@ -154,3 +154,50 @@ class CnblogsClient:
             self.blogid, self.username, self.token, data
         )
         return result["url"]
+
+
+def publish_file(path: str, client: "CnblogsClient", state: dict) -> None:
+    """发布或更新单篇文章。无 title 的文件跳过。"""
+    post = frontmatter.load(path)
+    title = post.get("title")
+    if not title:
+        print(f"[skip] 无 title: {path}")
+        return
+
+    tags = post.get("tags", []) or []
+    categories = post.get("cnblogs_categories", []) or []
+
+    md = render_and_embed_mermaid(post.content, render_mermaid_png, client.upload_media)
+    html = md_to_html(md)
+
+    key = repo_relative_key(path)
+    rec = state.setdefault(key, {})
+    if rec.get("cnblogs_id"):
+        client.edit_post(rec["cnblogs_id"], title, html, tags, categories)
+        print(f"[cnblogs] 已更新: {path}")
+    else:
+        pid = client.new_post(title, html, tags, categories)
+        rec["cnblogs_id"] = str(pid)
+        print(f"[cnblogs] 已创建: {path} -> {pid}")
+
+
+def main(argv) -> None:
+    paths = [a for a in argv if a.endswith(".md") and os.path.exists(a)]
+    if not paths:
+        raise SystemExit("用法：python cnblogs/publish.py 文章1.md [文章2.md ...]")
+
+    creds = load_credentials()
+    client = CnblogsClient(creds["blogname"], creds["username"], creds["token"])
+    state = load_state()
+
+    for path in paths:
+        try:
+            publish_file(path, client, state)
+        except Exception as e:
+            print(f"[cnblogs] 失败 {path}: {e}", file=sys.stderr)
+
+    save_state(state)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
