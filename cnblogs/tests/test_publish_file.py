@@ -47,3 +47,17 @@ def test_publish_file_skips_when_no_title(tmp_path):
     publish.publish_file(str(f), client, state)
     assert state == {}
     assert client.new == []
+
+
+def test_select_markdown_paths_keeps_valid_and_warns_on_ignored(tmp_path, capsys):
+    real = tmp_path / "ok.md"
+    real.write_text("x\n", encoding="utf-8")
+    missing = str(tmp_path / "typo.md")
+    not_md = str(tmp_path / "notes.txt")
+
+    paths = publish.select_markdown_paths([str(real), missing, not_md])
+
+    assert paths == [str(real)]
+    err = capsys.readouterr().err
+    assert missing in err          # 拼错/不存在的路径被警告而非静默丢弃
+    assert not_md in err           # 非 .md 参数被警告

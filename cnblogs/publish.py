@@ -39,7 +39,7 @@ def md_to_html(md_text: str) -> str:
     )
 
 
-MERMAID_RE = re.compile(r"```mermaid[ \t]*\r?\n(.*?)\r?\n```", re.DOTALL)
+MERMAID_RE = re.compile(r"(?<!`)```mermaid[ \t]*\r?\n(.*?)\r?\n```(?!`)", re.DOTALL)
 
 
 def render_mermaid_png(code: str, scale: int = 2) -> str:
@@ -180,8 +180,21 @@ def publish_file(path: str, client: "CnblogsClient", state: dict) -> None:
         print(f"[cnblogs] 已创建: {path} -> {pid}")
 
 
+def select_markdown_paths(argv) -> list:
+    """从命令行参数挑出存在的 .md 文件；对被忽略的参数发出警告，避免静默吞掉拼错的路径。"""
+    paths = []
+    for a in argv:
+        if not a.endswith(".md"):
+            print(f"[warn] 忽略非 .md 参数: {a}", file=sys.stderr)
+        elif not os.path.exists(a):
+            print(f"[warn] 文件不存在，已忽略: {a}", file=sys.stderr)
+        else:
+            paths.append(a)
+    return paths
+
+
 def main(argv) -> None:
-    paths = [a for a in argv if a.endswith(".md") and os.path.exists(a)]
+    paths = select_markdown_paths(argv)
     if not paths:
         raise SystemExit("用法：python cnblogs/publish.py 文章1.md [文章2.md ...]")
 
