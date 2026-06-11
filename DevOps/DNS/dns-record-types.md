@@ -1,3 +1,9 @@
+---
+title: "DNS Record Types Explained"
+date: 2026-06-11
+tags: [DNS, Networking]
+---
+
 # DNS Record Types Explained
 
 DNS records are the **actual data stored on authoritative DNS servers** that define how a domain should be resolved or handled. Each record has a **type**, which determines its purpose.  

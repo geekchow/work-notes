@@ -1,3 +1,9 @@
+---
+title: "Using AWS Route 53 as Your Domain's Authoritative DNS Server"
+date: 2026-06-10
+tags: [AWS, Route53, DNS]
+---
+
 # Using AWS Route 53 as Your Domain's Authoritative DNS Server
 
 Amazon Route 53 is a scalable and highly available Domain Name System (DNS) web service.  
@@ -60,10 +66,3 @@ You can test your configuration by:
 
 ## ✅ Summary
 By creating a hosted zone in Route 53, updating your registrar with Route 53’s name servers, and managing your DNS records in Route 53, you have successfully set up **AWS Route 53 as your domain’s authoritative DNS server**.
-
-
----
->prompt
-```
-use aws route53 as my domains authoritative dns server, please explain how to do so and put the answer into a markdown doc
-```
