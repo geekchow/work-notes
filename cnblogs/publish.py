@@ -140,6 +140,10 @@ class CnblogsClient:
             postid, self.username, self.token, post, publish
         )
 
+    def post_url(self, postid) -> str:
+        """根据 postid 构造文章的博客园页面链接。"""
+        return f"https://www.cnblogs.com/{self.blogid}/p/{postid}.html"
+
     def upload_media(self, png_path: str) -> str:
         """上传 PNG，返回博客园托管的图片 URL。"""
         with open(png_path, "rb") as f:
@@ -173,11 +177,12 @@ def publish_file(path: str, client: "CnblogsClient", state: dict) -> None:
     rec = state.setdefault(key, {})
     if rec.get("cnblogs_id"):
         client.edit_post(rec["cnblogs_id"], title, html, tags, categories)
-        print(f"[cnblogs] 已更新: {path}")
+        action = "已更新"
     else:
-        pid = client.new_post(title, html, tags, categories)
-        rec["cnblogs_id"] = str(pid)
-        print(f"[cnblogs] 已创建: {path} -> {pid}")
+        rec["cnblogs_id"] = str(client.new_post(title, html, tags, categories))
+        action = "已创建"
+    rec["url"] = client.post_url(rec["cnblogs_id"])
+    print(f"[cnblogs] {action}: {path} -> {rec['url']}")
 
 
 def select_markdown_paths(argv) -> list:

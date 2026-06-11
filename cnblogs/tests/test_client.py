@@ -43,6 +43,11 @@ def test_edit_post_targets_existing_id():
     assert srv.metaWeblog.calls[0] == ("editPost", "555")
 
 
+def test_post_url_built_from_blogname_and_id():
+    c = publish.CnblogsClient("philzhou", "user", "tok", server=FakeServer())
+    assert c.post_url("20432400") == "https://www.cnblogs.com/philzhou/p/20432400.html"
+
+
 def test_upload_media_returns_url(tmp_path):
     png = tmp_path / "d.png"
     png.write_bytes(b"\x89PNG\r\n")

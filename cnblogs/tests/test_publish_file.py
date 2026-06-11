@@ -17,6 +17,9 @@ class FakeClient:
     def upload_media(self, path):
         return "https://img.cnblogs.com/x.png"
 
+    def post_url(self, postid):
+        return f"https://www.cnblogs.com/blog/p/{postid}.html"
+
 
 def test_publish_file_creates_then_updates(tmp_path):
     f = tmp_path / "a.md"
@@ -30,6 +33,7 @@ def test_publish_file_creates_then_updates(tmp_path):
     publish.publish_file(str(f), client, state)
     key = publish.repo_relative_key(str(f))
     assert state[key]["cnblogs_id"] == "999"
+    assert state[key]["url"] == "https://www.cnblogs.com/blog/p/999.html"
     assert len(client.new) == 1
     assert client.new[0][0] == "你好"
 
