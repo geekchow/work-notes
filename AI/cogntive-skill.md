@@ -80,7 +80,7 @@ A clean responsibility table is often the single most clarifying artifact in the
 Finally, show how the components **coordinate to solve the original problem end to end**:
 
 - Trace the primary flow (the "happy path") step by step: what triggers what, what data moves where, in what order.
-- Include a simple diagram (ASCII or Mermaid) of the flow.
+- **Draw the flow — a diagram here is mandatory, not decorative.** For any non-trivial workflow, a **sequence flow diagram** must show the relationships and interoperation between components: who calls whom, in what order, with what data. Use Mermaid (`sequenceDiagram` / `flowchart`) for simple flows; for complicated flows — many participants, branching, retries, async fan-out, cross-boundary hops — produce a **draw.io (`.drawio`) file** instead, where layout, grouping, and annotations can be controlled precisely. (Full rules in "Visualization requirements" below.)
 - Cover the one or two most important failure/edge flows (what happens when a node dies, a message is duplicated, a cache misses…), because coordination under failure is usually the *reason* the design looks the way it does.
 
 **Quality bar:** The reader could now sketch the architecture on a whiteboard from memory and justify each component's existence by pointing back to the Stage-1 problem.
@@ -108,19 +108,70 @@ When the deliverable is a learning guide (not just a chat explanation), produce 
 
 ```
 <topic>-guide/
-├── 00-overview.md      # roadmap: what the reader will learn, in what order
+├── 00-overview.md      # roadmap + MANDATORY concept/component mindmap (see below)
 ├── 01-why.md           # Stage 1 — the problem
 ├── 02-what.md          # Stage 2 — definition, boundaries, ecosystem
-├── 03-how.md           # Stage 3 — concepts, components, coordination
+├── 03-how.md           # Stage 3 — concepts, components, coordination + flow diagrams
 │                       #   (split into 03a/03b/03c if it exceeds ~300 lines)
-├── 04-walkthrough.md   # Stage 4 — end-to-end example
-└── 05-next-steps.md    # optional: exercises, further reading, source-code entry points
+├── 04-walkthrough.md   # Stage 4 — end-to-end example (reuse/extend the 03 diagrams)
+├── 05-next-steps.md    # optional: exercises, further reading, source-code entry points
+└── diagrams/           # any .drawio sources for complicated diagrams
 ```
 
 Conventions:
 - Every file starts with a 2–3 line "Where you are / what you'll know after this file" header and ends with a link to the next file.
 - Define each term exactly once, in its dependency-order position; later files link back rather than redefine.
 - Prefer diagrams and tables over prose walls; prefer one deep example over three shallow ones.
+
+## Visualization requirements
+
+Visuals are first-class output of this skill, not decoration. Three rules:
+
+### 1. Mindmap outline of all concepts & components — MANDATORY
+
+Every guide pack **must** open (in `00-overview.md`) with a mindmap that outlines *all* core concepts and components in one glance, so the reader holds the whole territory in mind before entering it. Structure it by the skill's own anatomy:
+
+```mermaid
+mindmap
+  root((Topic))
+    Problem it solves
+      pain point 1
+      pain point 2
+    Core concepts
+      Concept A
+      Concept B
+    Components
+      Component X
+        owns ...
+      Component Y
+        owns ...
+    Key flows
+      happy path
+      failure path
+```
+
+Use Mermaid `mindmap` by default. If the map grows beyond ~25 nodes or needs cross-links between branches, build it in draw.io instead and commit the `.drawio` source to `diagrams/`.
+
+### 2. Sequence/flow diagrams for workflows — required when a workflow is non-trivial
+
+Whenever a workflow involves more than two components interacting, prose alone is insufficient: draw a **sequence flow** showing the relationships and interoperation (who calls whom, in what order, sync vs async, what data crosses each hop).
+
+Tool choice:
+- **Mermaid** (`sequenceDiagram`, `flowchart`, `stateDiagram-v2`) for simple cases — up to roughly 6 participants and a mostly linear flow. It renders inline in markdown, which readers get for free.
+- **draw.io** (`.drawio` file in `diagrams/`, export a `.png`/`.svg` and embed it in the markdown) for complicated cases — many participants, nested branching, retry/timeout loops, async fan-out/fan-in, swim-lanes across process or network boundaries. When Mermaid would produce spaghetti, switch to draw.io and use manual layout, grouping boxes, and annotations to keep it legible.
+
+Every diagram gets a one-line caption stating what question it answers (e.g. *"How a write becomes durable across replicas"*).
+
+### 3. Visualize wherever it aids cognition
+
+Beyond the two mandatory cases, add a diagram anywhere a picture beats a paragraph. Common wins:
+- **Ecosystem/positioning map** in Stage 2 (what it sits on, what sits on it, neighbors).
+- **Architecture/layer diagram** for the component overview in 3.2.
+- **State diagram** (`stateDiagram-v2`) for anything with a lifecycle (a message, a transaction, a container).
+- **Before/after comparison** in Stage 1 to make the pain visible.
+- **Annotated walkthrough diagram** in Stage 4: reuse the Stage-3 flow diagram with the concrete example's data overlaid on each hop.
+
+Rule of thumb: if you find yourself writing "A sends X to B, then B forwards Y to C…", stop and draw it.
 
 ## Adapting depth to the reader
 
@@ -135,6 +186,9 @@ Conventions:
 - [ ] The one-sentence definition references the Stage-1 problem.
 - [ ] 4–8 core concepts, introduced in dependency order.
 - [ ] Every component has an "owns / knows / does not do" entry.
-- [ ] At least one flow diagram and one failure/edge flow.
+- [ ] `00-overview.md` contains the mandatory mindmap covering all concepts and components.
+- [ ] Every non-trivial workflow has a sequence/flow diagram (Mermaid if simple, draw.io if complicated), each with a one-line caption.
+- [ ] At least one failure/edge flow is diagrammed or traced.
 - [ ] The walkthrough exercises every concept and component at least once.
 - [ ] Nothing is defined twice; nothing is used before it is defined.
+- [ ] No "A sends X to B, then B forwards to C…" paragraphs left undrawn.
