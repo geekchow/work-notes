@@ -1,20 +1,25 @@
 ---
 name: cognitive-mental-model
-description: A structured framework for learning and explaining any new concept, system, framework, or open-source project in software engineering. Use this skill whenever the user wants to understand, learn, study, or get explained a new technology (e.g. "explain Kafka to me", "help me understand how React works", "I want to learn Kubernetes", "what is RAFT consensus"), or wants to produce a learning guide, tutorial pack, or onboarding docs for a system. Also trigger when the user asks to break down an unfamiliar codebase, RFC, or architecture. The skill produces explanations (or a pack of markdown files) that follow the Why → What → How → Walkthrough progression.
+description: A structured framework for learning and explaining any new concept, system, framework, or open-source project in software engineering. Use this skill whenever the user wants to understand, learn, study, or get explained a new technology (e.g. "explain Kafka to me", "help me understand how React works", "I want to learn Kubernetes", "what is RAFT consensus"), or wants to produce a learning guide, tutorial pack, or onboarding docs for a system. Also trigger when the user asks to break down an unfamiliar codebase, RFC, or architecture. The skill produces explanations (or an organically organized pack of markdown files) that follow the Why → What → Concepts → Running Example → Depth-per-Component → Walkthrough progression.
 ---
 
 # Cognitive Mental Model — Learning New Systems in Software Engineering
 
 ## Core insight
 
-Every new concept, system, or open-source project in software engineering exists **to solve a problem**. Understanding it is not memorizing its API or its buzzwords — it is reconstructing the chain of reasoning that led from the problem to the design. This skill encodes that chain as a fixed four-stage progression:
+Every new concept, system, or open-source project in software engineering exists **to solve a problem**. Understanding it is not memorizing its API or its buzzwords — it is reconstructing the chain of reasoning that led from the problem to the design.
+
+The mental path is **breadth first, then depth, held together by one running example**:
 
 ```
-WHY  →  WHAT  →  HOW  →  WALKTHROUGH
-(problem)  (definition)  (design)   (see it run)
+WHY → WHAT → CONCEPT MAP → RUNNING EXAMPLE → DEPTH DIVES → FULL WALKTHROUGH
+(problem) (definition) (breadth: all      (one scenario,    (one dive per key   (re-run the example
+                        concepts &        traced shallowly)  player component,   end-to-end at
+                        components)                          anchored to the     full depth)
+                                                             example)
 ```
 
-Never skip a stage and never reorder them. Each stage answers the question the reader naturally has after the previous one.
+The reader first sees the whole territory (concepts), then meets one concrete scenario (example), then descends into each key player component **with the example as the anchor**, and finally re-runs the example end to end with full depth. Never skip a stage and never reorder them.
 
 ---
 
@@ -46,11 +51,9 @@ Now — and only now — define it.
 
 ---
 
-## Stage 3 — HOW: Design and implementation (the heart)
+## Stage 3 — CONCEPT MAP: The whole territory, breadth first
 
-This is the most important stage and deserves the most space. A reader who understands *how* the solution is designed owns a durable mental model; everything else can be looked up.
-
-Structure the How in three fixed steps:
+Lay out **all core concepts and all key player components in one pass, at one shallow level of depth**. No deep internals yet — the goal is that the reader holds the complete map in mind before descending anywhere. Three fixed steps:
 
 ### 3.1 Domain mapping — from problem to concepts
 
@@ -65,61 +68,94 @@ Rules:
 - For each concept give: name, one-line definition, and the problem element it represents.
 - Introduce concepts in **dependency order**: never mention a concept before the ones it builds on.
 
-### 3.2 Responsibility assignment — from concepts to components
+### 3.2 Key players — from concepts to components
 
-Show how the design **assigns distinct responsibilities to distinct components**. For each component:
+Identify the **key player components** and give each a one-paragraph identity (no internals yet):
 
 - **Owns:** the one responsibility it is in charge of (single-responsibility framing).
 - **Knows:** what state or information it holds.
 - **Does not do:** the tempting responsibility it deliberately avoids — this is where design elegance lives.
 
-A clean responsibility table is often the single most clarifying artifact in the entire guide.
+This table doubles as the **table of contents for the depth dives** in Stage 5: every key player listed here gets its own dive.
 
-### 3.3 Coordination — components working together
+### 3.3 Coordination at a glance
 
-Finally, show how the components **coordinate to solve the original problem end to end**:
+Show, at overview level, how the players **coordinate to solve the original problem end to end**: the happy-path flow, who calls whom, in what order, with what data — as **one diagram** (mandatory; see "Visualization requirements"). Mention the one or two most important failure/edge flows by name, deferring their mechanics to the depth dives.
 
-- Trace the primary flow (the "happy path") step by step: what triggers what, what data moves where, in what order.
-- **Draw the flow — a diagram here is mandatory, not decorative.** For any non-trivial workflow, a **sequence flow diagram** must show the relationships and interoperation between components: who calls whom, in what order, with what data. Use Mermaid (`sequenceDiagram` / `flowchart`) for simple flows; for complicated flows — many participants, branching, retries, async fan-out, cross-boundary hops — produce a **draw.io (`.drawio`) file** instead, where layout, grouping, and annotations can be controlled precisely. (Full rules in "Visualization requirements" below.)
-- Cover the one or two most important failure/edge flows (what happens when a node dies, a message is duplicated, a cache misses…), because coordination under failure is usually the *reason* the design looks the way it does.
-
-**Quality bar:** The reader could now sketch the architecture on a whiteboard from memory and justify each component's existence by pointing back to the Stage-1 problem.
+**Quality bar:** The reader could now sketch the whole architecture on a whiteboard and justify each component's existence — without yet knowing how any single component works inside.
 
 ---
 
-## Stage 4 — WALKTHROUGH: One comprehensive, concrete example
+## Stage 4 — RUNNING EXAMPLE: One scenario becomes the spine
 
-End with a single end-to-end example that **touches every concept and every component introduced above**. This converts abstract understanding into vivid, instant recall.
+Immediately after the concept map, introduce **one realistic, relatable scenario** (an order being placed, a request being served, a file being committed…) and trace it **shallowly** through the map: *"The user clicks X → **Component A** receives it → a **Concept B** is created → **Component C** picks it up…"* — bolding each concept/component the first time it appears in action.
 
-Requirements:
-- Pick one realistic, relatable scenario (an order being placed, a request being served, a file being committed…).
-- Narrate it chronologically: *"The user clicks X → component A does … → concept B is created … → component C picks it up …"*
-- At each step, **name the concept/component in bold** the first time it appears in action, so the reader mentally checks it off.
-- Show real artifacts where possible: actual commands, config snippets, log lines, or a short runnable code sample.
+This example is not a one-off illustration; it is the **spine of the entire guide**:
+- Every depth dive in Stage 5 must reference it ("recall step 3 of our example — here is what actually happens inside…").
+- The final walkthrough in Stage 6 re-runs it at full depth.
+- Choose it carefully: it must be rich enough to touch **every concept and every key player** at least once, yet simple enough to state in three sentences.
+
+**Quality bar:** The reader can retell the scenario from memory and name which component is on stage at each step — even though they don't yet know any component's internals.
+
+---
+
+## Stage 5 — DEPTH DIVES: Go deep into each key player, anchored to the example
+
+Now descend. **One dive per key player component** from the 3.2 table, in the order they appear in the running example. Each dive follows the same internal shape:
+
+1. **Role recap (2 lines):** what it owns, restated from 3.2, plus which steps of the running example it appears in.
+2. **Internal design:** its own sub-concepts, data structures, and algorithms; how it fulfills the responsibility it owns. Apply the same domain-mapping discipline recursively if the component is itself complex.
+3. **Interactions:** its contracts with neighboring components — inputs, outputs, protocols, guarantees. Diagram any non-trivial interaction.
+4. **⚓ Back to the example (mandatory anchor):** replay the component's moments in the running example at full depth — *"at step 3, when the order event arrives, this component does exactly: …"* — with real artifacts where possible (commands, config, log lines, code).
+5. **Failure behavior:** what happens when it dies, lags, or receives garbage — and how the design copes.
+
+Rules:
+- Dives are **self-contained branches**: a reader can read one dive alone, because the recap and the anchor tie it back to the trunk.
+- Depth is proportional to importance: a key player at the heart of the design gets a long dive; a supporting player gets a short one. Do not pad.
+- Every dive must contain at least one "⚓ Back to the example" section. A dive without the anchor is floating knowledge — reject it.
+
+**Quality bar:** After each dive, the reader can re-narrate the component's steps in the running example *including what happens inside*, not just that "it handles it".
+
+---
+
+## Stage 6 — FULL WALKTHROUGH: Re-run the example end to end
+
+Close by re-running the running example **once, end to end, at full depth** — stitching all the dives into one continuous narrative:
+
+- Narrate chronologically, crossing component boundaries explicitly: what data crosses each hop, what each component does inside (now known from the dives), what comes out.
+- Reuse the Stage-3 coordination diagram with the example's concrete data annotated on each hop.
+- Show real artifacts: actual commands, payloads, log excerpts, or a short runnable code sample tracing the whole path.
 - Close with a one-paragraph recap that restates the Stage-1 problem and how the walkthrough just solved it.
 
-**Quality bar:** After the walkthrough, every term from Stage 3 has been *seen doing its job* at least once.
+**Quality bar:** Every concept and every component has now been *seen doing its job in full depth* at least once, all in a single connected story.
 
 ---
 
-## Output format: the guide pack
+## Output format: an organically organized guide pack
 
-When the deliverable is a learning guide (not just a chat explanation), produce a pack of markdown files, one per stage, so readers can progress step by step:
+When the deliverable is a learning guide (not just a chat explanation), produce a pack of markdown files. The pack is organized **organically**: a fixed trunk carries the shared mental path, and the branches **grow to mirror the system's own anatomy** — one deep-dive file per key player, named after the component, added or split as the system demands rather than forced into a fixed template.
 
 ```
 <topic>-guide/
-├── 00-overview.md      # roadmap + MANDATORY concept/component mindmap (see below)
-├── 01-why.md           # Stage 1 — the problem
-├── 02-what.md          # Stage 2 — definition, boundaries, ecosystem
-├── 03-how.md           # Stage 3 — concepts, components, coordination + flow diagrams
-│                       #   (split into 03a/03b/03c if it exceeds ~300 lines)
-├── 04-walkthrough.md   # Stage 4 — end-to-end example (reuse/extend the 03 diagrams)
-├── 05-next-steps.md    # optional: exercises, further reading, source-code entry points
-└── diagrams/           # any .drawio sources for complicated diagrams
+├── 00-overview.md                 # roadmap + MANDATORY concept/component mindmap
+├── 01-why.md                      # Stage 1 — the problem
+├── 02-what.md                     # Stage 2 — definition, boundaries, ecosystem
+├── 03-concept-map.md              # Stage 3 — all concepts & key players, coordination at a glance
+├── 04-running-example.md          # Stage 4 — the spine scenario, traced shallowly
+├── 05-deep-dives/                 # Stage 5 — branches grow with the system
+│   ├── 01-<key-player-a>.md       #   one file per key player, in example order
+│   ├── 02-<key-player-b>.md       #   split a file into a sub-folder if a player
+│   └── ...                        #   is itself a subsystem (recurse the pattern)
+├── 06-walkthrough.md              # Stage 6 — the example re-run end to end, full depth
+├── 07-next-steps.md               # optional: exercises, further reading, source entry points
+└── diagrams/                      # .drawio sources for complicated diagrams
 ```
 
-Conventions:
-- Every file starts with a 2–3 line "Where you are / what you'll know after this file" header and ends with a link to the next file.
+Organic-organization principles:
+- **Structure mirrors anatomy.** The number and names of deep-dive files come from the system's actual key players (the 3.2 table), never from a quota. A system with 3 key players gets 3 dives; one with 7 gets 7.
+- **Grow depth only where the system has depth.** If a key player is itself a subsystem, turn its dive into a sub-folder and recurse the whole pattern (mini concept-map → mini dives) inside it.
+- **The running example is the connective tissue.** Trunk files introduce it; every branch anchors back to it; the walkthrough closes it. A reader can jump into any branch and still find their way back to the trunk via the anchor.
+- **Self-contained but rooted.** Every file starts with a 2–3 line "Where you are / what you'll know after this file" header and ends with links to the next file and back to the concept map.
 - Define each term exactly once, in its dependency-order position; later files link back rather than redefine.
 - Prefer diagrams and tables over prose walls; prefer one deep example over three shallow ones.
 
@@ -140,11 +176,13 @@ mindmap
     Core concepts
       Concept A
       Concept B
-    Components
+    Key players
       Component X
         owns ...
       Component Y
         owns ...
+    Running example
+      scenario in one line
     Key flows
       happy path
       failure path
@@ -154,7 +192,7 @@ Use Mermaid `mindmap` by default. If the map grows beyond ~25 nodes or needs cro
 
 ### 2. Sequence/flow diagrams for workflows — required when a workflow is non-trivial
 
-Whenever a workflow involves more than two components interacting, prose alone is insufficient: draw a **sequence flow** showing the relationships and interoperation (who calls whom, in what order, sync vs async, what data crosses each hop).
+Whenever a workflow involves more than two components interacting, prose alone is insufficient: draw a **sequence flow** showing the relationships and interoperation (who calls whom, in what order, sync vs async, what data crosses each hop). This applies to the Stage-3 coordination overview, non-trivial interactions inside depth dives, and the Stage-6 walkthrough.
 
 Tool choice:
 - **Mermaid** (`sequenceDiagram`, `flowchart`, `stateDiagram-v2`) for simple cases — up to roughly 6 participants and a mostly linear flow. It renders inline in markdown, which readers get for free.
@@ -166,29 +204,32 @@ Every diagram gets a one-line caption stating what question it answers (e.g. *"H
 
 Beyond the two mandatory cases, add a diagram anywhere a picture beats a paragraph. Common wins:
 - **Ecosystem/positioning map** in Stage 2 (what it sits on, what sits on it, neighbors).
-- **Architecture/layer diagram** for the component overview in 3.2.
+- **Architecture/layer diagram** for the key-player overview in 3.2.
 - **State diagram** (`stateDiagram-v2`) for anything with a lifecycle (a message, a transaction, a container).
 - **Before/after comparison** in Stage 1 to make the pain visible.
-- **Annotated walkthrough diagram** in Stage 4: reuse the Stage-3 flow diagram with the concrete example's data overlaid on each hop.
+- **Component-internals diagram** inside each depth dive when the internal design has moving parts.
+- **Annotated walkthrough diagram** in Stage 6: reuse the Stage-3 coordination diagram with the concrete example's data overlaid on each hop.
 
 Rule of thumb: if you find yourself writing "A sends X to B, then B forwards Y to C…", stop and draw it.
 
 ## Adapting depth to the reader
 
-- **Quick chat explanation:** compress each stage to a paragraph, keep the order.
-- **Beginner audience:** expand Stage 1 (more analogy, more pain) and Stage 4 (slower narration); compress 3.2.
-- **Experienced engineers:** compress Stages 1–2 to a few lines each; spend almost everything on Stage 3, especially "does not do" and failure coordination.
-- **Codebase/project onboarding:** in Stage 3, map concepts to actual directories/modules, and in Stage 4 walk through a real request or commit path in the source.
+- **Quick chat explanation:** compress each stage to a paragraph, keep the order — including a mini running example and at least a sentence of depth per key player.
+- **Beginner audience:** expand Stage 1 (more analogy, more pain) and Stage 4 (slower narration); keep dives short and lean harder on the "⚓ Back to the example" anchors.
+- **Experienced engineers:** compress Stages 1–2 to a few lines each; spend almost everything on Stage 5, especially "does not do", internals, and failure behavior.
+- **Codebase/project onboarding:** in Stage 3, map concepts to actual directories/modules; make each depth dive point at real source files and entry functions; in Stage 6 walk through a real request or commit path in the source.
 
 ## Checklist before delivering
 
-- [ ] Why comes before What; What comes before How; the example comes last.
+- [ ] The path runs Why → What → Concept map → Running example → Depth dives → Walkthrough, in that order.
 - [ ] The one-sentence definition references the Stage-1 problem.
-- [ ] 4–8 core concepts, introduced in dependency order.
-- [ ] Every component has an "owns / knows / does not do" entry.
-- [ ] `00-overview.md` contains the mandatory mindmap covering all concepts and components.
+- [ ] 4–8 core concepts, introduced in dependency order; key players listed with "owns / knows / does not do".
+- [ ] The running example is introduced before any depth dive and touches every concept and key player.
+- [ ] There is exactly one depth dive per key player, ordered by the example, each containing a "⚓ Back to the example" anchor.
+- [ ] Deep-dive files are named after real components; subsystems recurse into sub-folders (organic structure, no quota).
+- [ ] `00-overview.md` contains the mandatory mindmap covering all concepts, key players, and the example.
 - [ ] Every non-trivial workflow has a sequence/flow diagram (Mermaid if simple, draw.io if complicated), each with a one-line caption.
 - [ ] At least one failure/edge flow is diagrammed or traced.
-- [ ] The walkthrough exercises every concept and component at least once.
+- [ ] The walkthrough re-runs the running example end to end at full depth, stitching all dives.
 - [ ] Nothing is defined twice; nothing is used before it is defined.
 - [ ] No "A sends X to B, then B forwards to C…" paragraphs left undrawn.
